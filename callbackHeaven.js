@@ -1,4 +1,4 @@
-// nothing should be edited below this line until the next comment marker
+debugger;// nothing should be edited below this line until the next comment marker
 function fastFunction(cb) {
   setTimeout(function () {
     cb("fastFunction error");
@@ -18,23 +18,27 @@ function immediateFunction(cb) {
 // nothing should be edited above this line
 
 function runSequentially(cb) {
+  cb(null, immediateFunction);
+  //fastFunction(cb);
+  //slowFunction(cb);
+
+}
   // pass in `messageHandler` as the callback to this function
   // invoke the 3 functions at the top of this file within this function
   // your code here... 
 
-}
 
 function messageHandler(err, data) {
   // use this function to define the callback that will be passed to `runSequentially`
   // this function supplies the "messageHandler handled " message  
   // your code here...
-  if (err) throw err;
+  if (err) {`messagehandler handled ${err} error`};
 
-  return data;
+  return `messagehandler handled ${data} worked`;  
 };
 
 // after defining everything, invoke like this:
-runSequentially(/* put something in here */);
+runSequentially(messageHandler(null, immediateFunction));//????
 
 /*
   expected output of invoking `runSequentially`:
