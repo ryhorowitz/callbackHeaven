@@ -21,20 +21,42 @@ function runSequentially(cb) {
   // pass in `messageHandler` as the callback to this function
   // invoke the 3 functions at the top of this file within this function
   // your code here...
-
-}
+  slowFunction((err, data) => {
+    if (err) {
+      cb(err)
+    } else {
+      cb(null, data)
+      fastFunction((err, data) => {
+        if (err) {
+          cb(err);
+          immediateFunction((err, data) => {
+            if (err) {
+              cb(err)
+            } else {
+              cb(null, data)
+            }
+          })
+        } else {
+          cb(null, data);
+        }
+      });
+    }
+  });
+};
 
 function messageHandler(err, data) {
   // use this function to define the callback that will be passed to `runSequentially`
   // this function supplies the "messageHandler handled " message
   // your code here...
-  if (err) throw err;
-
-  return data;
+  if (err) {
+    console.log(`messageHandler handled`, err);
+  } else {
+    console.log (`messageHandler handled`, data);
+  }
 };
 
 // after defining everything, invoke like this:
-runSequentially(/* put something in here */);
+runSequentially(messageHandler);
 
 /*
   expected output of invoking `runSequentially`:
